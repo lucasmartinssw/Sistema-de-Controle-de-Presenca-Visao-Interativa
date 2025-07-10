@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Controle de Presença - Visão Interativa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A dashboard-style Single Page Application (SPA) with a fixed sidebar for navigation. The content area dynamically displays different sections (Overview, User Profiles, Modules, Notification Flow, Future Enhancements). This structure was chosen because it allows the user to logically explore different facets of the system without being overwhelmed by a long document. It promotes active exploration over passive reading, breaking down complex information into manageable, interactive views, which is ideal for understanding a system's architecture and functionality. -->
+    <!-- Visualization & Content Choices: 
+        - Overview: Goal: Inform. Method: HTML/CSS diagram. Interaction: Hover effects to highlight components. Justification: Provides a quick, high-level mental model of the system.
+        - User Profiles: Goal: Organize. Method: Interactive cards/tabs. Interaction: Clicking a profile reveals its details. Justification: Allows for easy comparison of roles.
+        - Modules: Goal: Detail/Organize. Method: Nested accordions. Interaction: Clicking to expand/collapse details. Justification: Manages hierarchical information cleanly.
+        - Notification Flow: Goal: Explain a process. Method: Step-by-step visual flowchart with HTML/CSS. Interaction: Sequential highlighting. Justification: Much clearer than text for explaining a process.
+        - Future Enhancements: Goal: Inform. Method: Grid of cards. Interaction: Simple hover effects. Justification: Presents future ideas in a digestible format.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .nav-link { transition: all 0.2s ease-in-out; }
+        .nav-link.active { background-color: #e5e5e5; color: #1f2937; font-weight: 600; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .accordion-button.open .accordion-arrow { transform: rotate(180deg); }
+        .accordion-arrow { transition: transform 0.3s ease-out; }
+        .flow-step-arrow::after { content: '→'; color: #a1a1aa; font-size: 2rem; line-height: 1; position: absolute; top: 50%; right: -2rem; transform: translateY(-50%); }
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-800">
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <nav id="sidebar" class="w-full md:w-64 bg-stone-50 border-r border-stone-200 p-4 md:p-6 flex-shrink-0">
+            <h1 class="text-xl font-bold text-teal-700 mb-8">Controle de Presença</h1>
+            <ul class="space-y-2">
+                <li><a href="#visao-geral" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-stone-200">
+                    <span class="w-6 h-6 flex items-center justify-center">❖</span>Visão Geral</a></li>
+                <li><a href="#perfis" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-stone-200">
+                    <span class="w-6 h-6 flex items-center justify-center">☺</span>Perfis de Usuário</a></li>
+                <li><a href="#modulos" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-stone-200">
+                    <span class="w-6 h-6 flex items-center justify-center">⚙</span>Módulos</a></li>
+                <li><a href="#fluxo" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-stone-200">
+                    <span class="w-6 h-6 flex items-center justify-center">✉</span>Fluxo de Notificação</a></li>
+                <li><a href="#melhorias" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-stone-200">
+                    <span class="w-6 h-6 flex items-center justify-center">✨</span>Melhorias Futuras</a></li>
+            </ul>
+        </nav>
+
+        <main class="flex-1 p-6 md:p-10">
+            <section id="visao-geral" class="content-section">
+                <h2 class="text-3xl font-bold mb-2 text-stone-900">Visão Geral do Sistema</h2>
+                <p class="mb-8 text-stone-600">Esta seção apresenta a arquitetura geral do sistema, mostrando como os diferentes usuários interagem com os módulos principais e o fluxo de dados. Explore o diagrama para entender a estrutura e os componentes centrais.</p>
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-200">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center">
+                        <div class="space-y-4">
+                            <h3 class="font-semibold text-lg text-teal-700">Usuários</h3>
+                            <div class="p-4 bg-stone-100 rounded-lg">Administrador</div>
+                            <div class="p-4 bg-stone-100 rounded-lg">Professor</div>
+                            <div class="p-4 bg-stone-100 rounded-lg">Responsável</div>
+                             <div class="p-4 bg-stone-100 rounded-lg">Aluno</div>
+                        </div>
+                        <div class="text-5xl text-stone-300 font-light">→</div>
+                         <div class="space-y-4">
+                            <h3 class="font-semibold text-lg text-teal-700">Plataforma</h3>
+                            <div class="p-4 bg-stone-100 rounded-lg">Módulo de Autenticação</div>
+                            <div class="p-4 bg-stone-100 rounded-lg">Módulos de Gestão</div>
+                            <div class="p-4 bg-stone-100 rounded-lg">API de Notificação (WhatsApp)</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="perfis" class="content-section">
+                 <h2 class="text-3xl font-bold mb-2 text-stone-900">Perfis de Usuário</h2>
+                 <p class="mb-8 text-stone-600">O sistema é projetado para quatro perfis distintos. Clique em cada perfil abaixo para ver em detalhes suas responsabilidades e permissões específicas dentro da plataforma.</p>
+                <div id="user-profiles-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                </div>
+            </section>
+
+            <section id="modulos" class="content-section">
+                <h2 class="text-3xl font-bold mb-2 text-stone-900">Módulos e Funcionalidades</h2>
+                <p class="mb-8 text-stone-600">Explore as funcionalidades detalhadas disponíveis para cada perfil principal do sistema. O Módulo do Administrador foca na gestão completa dos dados, enquanto o Módulo do Professor se concentra nas atividades de sala de aula.</p>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                        <h3 class="text-xl font-bold mb-4 text-teal-700">Módulo de Autenticação e Autorização</h3>
+                        <p class="text-stone-700">Garante a segurança e o acesso controlado, permitindo login para Administradores e Professores e restringindo funcionalidades com base no perfil de cada usuário.</p>
+                    </div>
+                    <div id="accordion-container" class="space-y-4">
+                    </div>
+                </div>
+            </section>
+
+            <section id="fluxo" class="content-section">
+                <h2 class="text-3xl font-bold mb-2 text-stone-900">Fluxo de Notificação de Ausência</h2>
+                <p class="mb-8 text-stone-600">Um dos recursos centrais do sistema é a notificação automática de ausências para os responsáveis via WhatsApp. Esta seção detalha o processo passo a passo, desde o registro da falta pelo professor até o envio da mensagem.</p>
+                <div class="space-y-8">
+                    <div id="notification-flow-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-x-12 gap-y-8">
+                    </div>
+                </div>
+            </section>
+            
+            <section id="melhorias" class="content-section">
+                <h2 class="text-3xl font-bold mb-2 text-stone-900">Considerações e Melhorias Futuras</h2>
+                <p class="mb-8 text-stone-600">Para aprimorar continuamente o sistema, diversas melhorias e novas funcionalidades são propostas. Esta seção destaca as principais oportunidades de evolução da plataforma.</p>
+                <div id="improvements-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    const data = {
+        userProfiles: [
+            { name: 'Administrador', icon: '🔑', description: 'Responsável pela configuração inicial e gerenciamento geral do sistema, com acesso total a todos os módulos e dados.' },
+            { name: 'Professor', icon: '‍🏫', description: 'Responsável por registrar a presença dos alunos em suas turmas e visualizar históricos de chamadas.' },
+            { name: 'Aluno', icon: '🎓', description: 'Usuário que tem sua presença registrada e monitorada pelo sistema.' },
+            { name: 'Responsável', icon: '👨‍👩‍👧‍👦', description: 'Recebe notificações automáticas via WhatsApp sobre a ausência do aluno.' }
+        ],
+        modules: [
+            { 
+                title: 'Módulo do Administrador', 
+                features: [
+                    { name: 'Gerenciar Turmas', details: ['Adicionar Turma (Nome, Ano, etc.)', 'Visualizar, Editar e Excluir Turmas'] },
+                    { name: 'Gerenciar Professores', details: ['Adicionar Professor (Nome, Email, etc.)', 'Associar Professores a Turmas', 'Visualizar, Editar e Excluir Professores'] },
+                    { name: 'Gerenciar Alunos', details: ['Adicionar Aluno (Nome, Matrícula, etc.)', 'Visualizar, Editar e Excluir Alunos'] },
+                    { name: 'Gerenciar Matérias', details: ['Adicionar Matéria (Nome, Código)', 'Associar Matérias a Turmas e Professores', 'Visualizar, Editar e Excluir Matérias'] },
+                    { name: 'Relatórios', details: ['Relatórios de Presença por Aluno, Turma', 'Relatórios de Acesso e Atividade do Sistema'] }
+                ] 
+            },
+            {
+                title: 'Módulo do Professor',
+                features: [
+                    { name: 'Minhas Turmas', details: ['Visualizar as turmas e matérias que leciona.'] },
+                    { name: 'Realizar Chamada', details: ['Selecionar Turma e Data', 'Listar Alunos da Turma', 'Marcar Presença/Falta', 'Salvar o registro da chamada'] },
+                    { name: 'Histórico de Chamadas', details: ['Visualizar chamadas anteriores.'] }
+                ]
+            }
+        ],
+        notificationFlow: [
+            { step: 1, title: 'Professor Realiza Chamada', icon: '✍️', description: 'Professor acessa o sistema, seleciona a turma e marca a presença ou falta dos alunos.' },
+            { step: 2, title: 'Sistema Identifica Ausência', icon: '🔍', description: 'Ao salvar, o sistema identifica os alunos marcados como "Falta".' },
+            { step: 3, title: 'Consulta de Responsável', icon: '👤', description: 'O sistema busca no cadastro o nome e o telefone do responsável pelo aluno ausente.' },
+            { step: 4, title: 'Geração da Mensagem', icon: '💬', description: 'Uma mensagem de notificação padronizada é gerada com os detalhes da ausência.' },
+            { step: 5, title: 'Envio via WhatsApp', icon: '🚀', description: 'Utilizando uma API, a mensagem é enviada para o número de WhatsApp do responsável.' }
+        ],
+        improvements: [
+            { title: 'Notificações para Professores', icon: '🔔', description: 'Alertar sobre novas turmas ou mudanças em suas matérias.' },
+            { title: 'Integração com Calendário', icon: '📅', description: 'Integrar as chamadas com um calendário escolar para melhor planejamento.' },
+            { title: 'Aplicativo Móvel', icon: '📱', description: 'App para professores realizarem chamada e para responsáveis acompanharem.' },
+            { title: 'Justificativa de Faltas', icon: '📝', description: 'Funcionalidade para o responsável ou administrador justificar faltas.' },
+            { title: 'Relatórios Personalizados', icon: '📊', description: 'Opções para gerar relatórios mais detalhados e customizados.' },
+            { title: 'Segurança e Auditoria', icon: '🛡️', description: 'Implementação de segurança robusta e registro de todas as ações.' }
+        ]
+    };
+
+    function populateUserProfiles() {
+        const container = document.getElementById('user-profiles-container');
+        container.innerHTML = data.userProfiles.map(profile => `
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-stone-200 flex flex-col items-center text-center">
+                <div class="text-4xl mb-4">${profile.icon}</div>
+                <h3 class="text-lg font-bold text-teal-700 mb-2">${profile.name}</h3>
+                <p class="text-stone-600 text-sm flex-1">${profile.description}</p>
+            </div>
+        `).join('');
+    }
+
+    function populateModules() {
+        const container = document.getElementById('accordion-container');
+        container.innerHTML = data.modules.map(module => `
+            <div class="bg-white rounded-xl shadow-sm border border-stone-200">
+                <h3 class="text-xl font-bold p-6 text-teal-700">${module.title}</h3>
+                <div class="border-t border-stone-200">
+                    ${module.features.map((feature, index) => `
+                        <div class="accordion-item border-b border-stone-200 last:border-b-0">
+                            <button class="accordion-button w-full flex justify-between items-center text-left p-6 hover:bg-stone-50">
+                                <span class="font-semibold text-stone-800">${feature.name}</span>
+                                <span class="accordion-arrow text-teal-600 text-2xl font-light transform transition-transform">↓</span>
+                            </button>
+                            <div class="accordion-content bg-stone-50">
+                                <ul class="list-disc list-inside p-6 text-stone-700 space-y-2">
+                                    ${feature.details.map(detail => `<li>${detail}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `).join('');
+        addAccordionListeners();
+    }
+    
+    function addAccordionListeners() {
+        document.querySelectorAll('.accordion-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                button.classList.toggle('open');
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+    }
+
+    function populateNotificationFlow() {
+        const container = document.getElementById('notification-flow-container');
+        container.innerHTML = data.notificationFlow.map(item => `
+            <div class="relative bg-white p-6 rounded-xl shadow-sm border border-stone-200 text-center ${item.step < 5 ? 'lg:flow-step-arrow' : ''}">
+                <div class="mx-auto w-16 h-16 mb-4 flex items-center justify-center rounded-full bg-teal-100 text-3xl">${item.icon}</div>
+                <h4 class="font-bold text-teal-700 mb-2">Passo ${item.step}: ${item.title}</h4>
+                <p class="text-stone-600 text-sm">${item.description}</p>
+            </div>
+        `).join('');
+    }
+
+    function populateImprovements() {
+        const container = document.getElementById('improvements-container');
+        container.innerHTML = data.improvements.map(item => `
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-stone-200">
+                <div class="flex items-start gap-4">
+                    <span class="text-3xl">${item.icon}</span>
+                    <div>
+                        <h4 class="font-bold text-teal-700 mb-1">${item.title}</h4>
+                        <p class="text-stone-600 text-sm">${item.description}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function navigate(hash) {
+        if (!hash) hash = '#visao-geral';
+
+        contentSections.forEach(section => {
+            if ('#' + section.id === hash) {
+                section.classList.add('active');
+            } else {
+                section.classList.remove('active');
+            }
+        });
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === hash) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const hash = e.currentTarget.getAttribute('href');
+            window.location.hash = hash;
+        });
+    });
+
+    window.addEventListener('hashchange', () => navigate(window.location.hash));
+    
+    populateUserProfiles();
+    populateModules();
+    populateNotificationFlow();
+    populateImprovements();
+    navigate(window.location.hash);
+});
+</script>
+</body>
+</html>
