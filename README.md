@@ -7,8 +7,6 @@ O objetivo é oferecer uma visão clara e dinâmica da estrutura do sistema, seu
 
 ## Demonstração Visual
 
-> *(Insira aqui a captura de tela ou diagrama do sistema)*
-
 ![Prévia do Sistema](./docs/images/previa.png)
 
 ---
